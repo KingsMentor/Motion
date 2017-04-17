@@ -1,17 +1,48 @@
 package xyz.belvi.motion.models.pojos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by zone2 on 4/11/17.
  */
 
 
-public class Movie {
+public class Movie implements Parcelable {
 
     private String poster_path, overview, release_date, original_title, original_language, title, backdrop_path;
     private long[] genre_ids;
     private long id, video_count;
-    private double popularity, vote_average;
+    private float popularity, vote_average;
     private boolean adult;
+
+    protected Movie(Parcel in) {
+        poster_path = in.readString();
+        overview = in.readString();
+        release_date = in.readString();
+        original_title = in.readString();
+        original_language = in.readString();
+        title = in.readString();
+        backdrop_path = in.readString();
+        genre_ids = in.createLongArray();
+        id = in.readLong();
+        video_count = in.readLong();
+        popularity = in.readFloat();
+        vote_average = in.readFloat();
+        adult = in.readByte() != 0;
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public String getPosterPath() {
         return this.poster_path;
@@ -49,7 +80,7 @@ public class Movie {
         return this.video_count;
     }
 
-    public double getVoteAverage() {
+    public float getVoteAverage() {
         return this.vote_average;
     }
 
@@ -63,5 +94,27 @@ public class Movie {
 
     public long[] getGenreIds() {
         return this.genre_ids;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(poster_path);
+        parcel.writeString(overview);
+        parcel.writeString(release_date);
+        parcel.writeString(original_title);
+        parcel.writeString(original_language);
+        parcel.writeString(title);
+        parcel.writeString(backdrop_path);
+        parcel.writeLongArray(genre_ids);
+        parcel.writeLong(id);
+        parcel.writeLong(video_count);
+        parcel.writeFloat(popularity);
+        parcel.writeFloat(vote_average);
+        parcel.writeByte((byte) (adult ? 1 : 0));
     }
 }

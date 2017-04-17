@@ -57,14 +57,15 @@ public class MovieRequestHandler {
         if (currentMovieSort == movieSort) {
             int initialSize = movieSort == MovieSort.POPULAR ? popularMovieData.getMovies().size() - movies.size() : topRatedMovieData.getMovies().size() - movies.size();
             int currentSize = movieSort == MovieSort.POPULAR ? popularMovieData.getMovies().size() : topRatedMovieData.getMovies().size();
-            movieAdapter.update(movies, initialSize, currentSize);
+            movieAdapter.notifyItemRangeInserted(initialSize, currentSize);
+//            movieAdapter.update(movies, initialSize, currentSize);
             if (initialSize == 0) {
                 dataReady();
             }
         } else {
             movieAdapter.resetItem(movieSort == MovieSort.POPULAR ? popularMovieData.getMovies() : topRatedMovieData.getMovies());
         }
-        loadStart();
+        loadComplete();
     }
 
     private void handleDataFailureUpdate() {

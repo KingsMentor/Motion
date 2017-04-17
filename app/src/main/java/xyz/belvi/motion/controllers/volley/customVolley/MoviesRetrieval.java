@@ -38,6 +38,7 @@ public class MoviesRetrieval extends MoviesRequest {
     @Override
     protected Response<ArrayList<Movie>> parseNetworkResponse(NetworkResponse response) {
         try {
+
             String json = new String(
                     response.data,
                     HttpHeaderParser.parseCharset(response.headers));
