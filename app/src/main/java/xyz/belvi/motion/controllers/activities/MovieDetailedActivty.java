@@ -6,11 +6,12 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
 
 import xyz.belvi.motion.R;
-import xyz.belvi.motion.controllers.Utils;
+import xyz.belvi.motion.models.enums.MoviePosterSize;
 import xyz.belvi.motion.models.pojos.Movie;
 
 public class MovieDetailedActivty extends AppCompatActivity {
@@ -25,14 +26,16 @@ public class MovieDetailedActivty extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        AppCompatImageView imgPath = (AppCompatImageView) findViewById(R.id.img_postal);
+        AppCompatImageView backDropImg = (AppCompatImageView) findViewById(R.id.img_postal);
+        AppCompatImageView thumbnail = (AppCompatImageView) findViewById(R.id.thumbnail);
 
-        Glide.with(this).load(Utils.getImagePath(getMovie().getBackdropPath())).into(imgPath);
+        Glide.with(this).load(getMovie().getBackdropPath(MoviePosterSize.w500)).into(backDropImg);
         setViewText(R.id.over_view, getMovie().getOverview());
         setViewText(R.id.release_date, getMovie().getReleaseDate());
         setViewText(R.id.title, getMovie().getTitle());
         setViewText(R.id.rating_txt, String.valueOf(getMovie().getVoteAverage()));
         ((AppCompatRatingBar) findViewById(R.id.rating)).setRating(getMovie().getVoteAverage() / 2);
+        Glide.with(this).load(getMovie().getPosterPath(MoviePosterSize.w185)).into(thumbnail);
 
     }
 
@@ -42,5 +45,11 @@ public class MovieDetailedActivty extends AppCompatActivity {
 
     private Movie getMovie() {
         return getIntent().getParcelableExtra(MOVIE_KEY);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -3,6 +3,8 @@ package xyz.belvi.motion.models.pojos;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import xyz.belvi.motion.models.enums.MoviePosterSize;
+
 /**
  * Created by zone2 on 4/11/17.
  */
@@ -15,6 +17,7 @@ public class Movie implements Parcelable {
     private long id, video_count;
     private float popularity, vote_average;
     private boolean adult;
+    private final String IMG_PATH = "http://image.tmdb.org/t/p/w";
 
     protected Movie(Parcel in) {
         poster_path = in.readString();
@@ -44,8 +47,8 @@ public class Movie implements Parcelable {
         }
     };
 
-    public String getPosterPath() {
-        return this.poster_path;
+    public String getPosterPath(MoviePosterSize moviePosterSize) {
+        return IMG_PATH + moviePosterSize.getSize() + "/" + this.poster_path;
     }
 
     public String getOverview() {
@@ -68,8 +71,9 @@ public class Movie implements Parcelable {
         return this.title;
     }
 
-    public String getBackdropPath() {
-        return this.backdrop_path;
+    public String getBackdropPath(MoviePosterSize moviePosterSize) {
+        return IMG_PATH + moviePosterSize.getSize() + "/" + this.backdrop_path;
+
     }
 
     public long getId() {

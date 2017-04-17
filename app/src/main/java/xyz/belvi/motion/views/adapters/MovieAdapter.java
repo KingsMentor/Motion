@@ -10,10 +10,10 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import xyz.belvi.motion.R;
+import xyz.belvi.motion.models.enums.MoviePosterSize;
 import xyz.belvi.motion.models.pojos.Movie;
 import xyz.belvi.motion.viewmodels.holders.MovieHolder;
 
-import static xyz.belvi.motion.controllers.Utils.getImagePath;
 
 /**
  * Created by zone2 on 4/12/17.
@@ -34,7 +34,7 @@ public abstract class MovieAdapter extends RecyclerView.Adapter<MovieHolder> {
 
     @Override
     public void onBindViewHolder(MovieHolder holder, final int position) {
-        Glide.with(holder.getContext()).load(getImagePath(getMovie(position).getPosterPath())).into(holder.getMovieImage());
+        Glide.with(holder.getContext()).load(getMovie(position).getPosterPath(MoviePosterSize.w342)).into(holder.getMovieImage());
 //        holder.getVoteAverage().setText(String.valueOf(getMovie(position).getVoteAverage()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,8 +52,6 @@ public abstract class MovieAdapter extends RecyclerView.Adapter<MovieHolder> {
     public int getItemCount() {
         return movies.size();
     }
-
-
 
 
     public void resetItem(ArrayList<Movie> movies) {
