@@ -41,9 +41,20 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
         initRecyclerView();
         initToolbar();
         MotionApplication.getInstance().getMovieRequestHandler().bind(this).load();
+        findViewById(R.id.retry).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MotionApplication.getInstance().getMovieRequestHandler().retry(getSelectedMovieSort());
+            }
+        });
 
     }
 
+    private MovieSort getSelectedMovieSort() {
+        return selectedMenu == R.id.action_filter_popular ? MovieSort.POPULAR : MovieSort.TOP_RATED;
+    }
+
+    int selectedMenu = R.id.action_filter_popular;
 
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -75,12 +86,15 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 item.setChecked(true);
-                if (item.getItemId() == R.id.action_filter_popular) {
-                    MotionApplication.getInstance().getMovieRequestHandler().fetchAdapter(MovieSort.POPULAR);
-                } else {
-                    MotionApplication.getInstance().getMovieRequestHandler().fetchAdapter(MovieSort.TOP_RATED);
+                if (selectedMenu != item.getItemId()) {
+                    if (item.getItemId() == R.id.action_filter_popular) {
+                        MotionApplication.getInstance().getMovieRequestHandler().fetchAdapter(MovieSort.POPULAR);
+                    } else {
+                        MotionApplication.getInstance().getMovieRequestHandler().fetchAdapter(MovieSort.TOP_RATED);
+                    }
                 }
                 drawerLayout.closeDrawer(Gravity.RIGHT);
+                selectedMenu = item.getItemId();
                 return true;
             }
         });
@@ -106,17 +120,24 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
 
     @Override
     public void onLoadCompleted() {
+        findViewById(R.id.loading_items).setVisibility(View.GONE);
         toggleLoadingView(false);
     }
 
     @Override
-    public void onLoadStarted() {
-        toggleLoadingView(true);
+    public void onLoadStarted(boolean firstLoad) {
+        findViewById(R.id.failed_view).setVisibility(View.GONE);
+        if (firstLoad) {
+            findViewById(R.id.loading_items).setVisibility(View.VISIBLE);
+        } else {
+            toggleLoadingView(true);
+        }
     }
 
     @Override
     public void onLoadFailure() {
-        toggleLoadingView(false);
+        findViewById(R.id.loading_items).setVisibility(View.GONE);
+        findViewById(R.id.failed_view).setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -11,7 +11,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controllers.activities.MainActivity">
+        <activity
+            android:name=".controllers.activities.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,11 +23,12 @@
 
         <meta-data
             android:name="movie_db_api_key"
-            android:value="e7b1f85516eecf5f36dc00942f575c6a" />
+            android:value="YOUR_API_KEY" />
 
         <activity
             android:name=".controllers.activities.MovieDetailedActivty"
             android:label="@string/title_activity_movie_detailed_activty"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"></activity>
     </application>
 

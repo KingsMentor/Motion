@@ -53,7 +53,8 @@ public class MovieRequestHandler {
             popularMovieData.getMovies().addAll(movies);
         else
             topRatedMovieData.getMovies().addAll(movies);
-
+        if (movieAdapter == null)//handler has not been binded
+            return;
         if (currentMovieSort == movieSort) {
             int initialSize = movieSort == MovieSort.POPULAR ? popularMovieData.getMovies().size() - movies.size() : topRatedMovieData.getMovies().size() - movies.size();
             int currentSize = movieSort == MovieSort.POPULAR ? popularMovieData.getMovies().size() : topRatedMovieData.getMovies().size();
@@ -68,8 +69,8 @@ public class MovieRequestHandler {
         loadComplete();
     }
 
-    private void handleDataFailureUpdate() {
-        if (popularMovieData.getMovies().size() == 0 && topRatedMovieData.getMovies().size() == 0) {
+    private void handleDataFailureUpdate(MovieSort movieSort) {
+        if ((popularMovieData.getMovies().size() == 0 && movieSort == MovieSort.POPULAR) || (topRatedMovieData.getMovies().size() == 0 && movieSort == MovieSort.TOP_RATED)) {
             loadFailed();
         } else {
             loadComplete();
@@ -100,7 +101,7 @@ public class MovieRequestHandler {
             @Override
             public void onErrorResponse(VolleyError error) {
                 isLoading = false;
-                handleDataFailureUpdate();
+                handleDataFailureUpdate(movieSort);
             }
         });
         request.setRetryPolicy(new DefaultRetryPolicy(5000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -115,6 +116,10 @@ public class MovieRequestHandler {
         } else {
             dataReady();
         }
+    }
+
+    public void retry(MovieSort movieSort) {
+        load(movieSort, 1);
     }
 
     public void load() {
@@ -132,6 +137,8 @@ public class MovieRequestHandler {
     }
 
     public void fetchAdapter(MovieSort movieSort) {
+        if (movieAdapter == null)
+            return;
         if (movieSort != currentMovieSort) {
             movieAdapter.resetItem(movieSort == MovieSort.POPULAR ? popularMovieData.getMovies() : topRatedMovieData.getMovies());
             currentMovieSort = movieSort;
@@ -148,15 +155,17 @@ public class MovieRequestHandler {
     private void loadStart() {
         isLoading = true;
         if (dataPresenter != null)
-            dataPresenter.onLoadStarted();
+            dataPresenter.onLoadStarted(currentMovieSort == MovieSort.POPULAR ? popularMovieData.getMovies().size() == 0 : topRatedMovieData.getMovies().size() == 0);
     }
 
     private void loadFailed() {
+        isLoading = false;
         if (dataPresenter != null)
             dataPresenter.onLoadFailure();
     }
 
     private void loadComplete() {
+        isLoading = false;
         if (dataPresenter != null)
             dataPresenter.onLoadCompleted();
     }

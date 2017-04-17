@@ -12,8 +12,7 @@
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:openDrawer="right">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,17 +21,44 @@
 
             <include layout="@layout/toolbar" />
 
-
-            <xyz.belvi.motion.views.enchanceViews.EnhanceRecyclerView
-                android:id="@+id/movies"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:clipToPadding="false" />
+                android:layout_height="match_parent">
 
-            <include
-                layout="@layout/loading_view"
-                android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <xyz.belvi.motion.views.enchanceViews.EnhanceRecyclerView
+                        android:id="@+id/movies"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:clipToPadding="false" />
+
+
+                    <include
+                        layout="@layout/loading_view"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/failed_view"
+                    layout="@layout/failed_to_load"
+                    android:visibility="gone" />
+
+                <ProgressBar
+
+                    android:id="@+id/loading_items"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+
         </LinearLayout>
 
         <android.support.design.widget.NavigationView

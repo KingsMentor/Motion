@@ -15,7 +15,7 @@ public interface DataPresenter {
 
     public void onLoadCompleted();
 
-    public void onLoadStarted();
+    public void onLoadStarted(boolean firstLoad);
 
     public void onLoadFailure();
 
