@@ -19,6 +19,7 @@ import android.view.View;
 
 import xyz.belvi.motion.R;
 import xyz.belvi.motion.controllers.application.MotionApplication;
+import xyz.belvi.motion.controllers.dataRequestHandler.MovieRequestHandler;
 import xyz.belvi.motion.controllers.presenters.DataPresenter;
 import xyz.belvi.motion.models.enums.MovieSort;
 import xyz.belvi.motion.models.pojos.Movie;
@@ -40,16 +41,14 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
         setContentView(R.layout.activity_main);
         initRecyclerView();
         initToolbar();
-        bindMovieRequestHandler();
-        MovieSort lastUserPref = MotionApplication.getInstance().getMovieRequestHandler().getPrefSortType();
+        MovieSort lastUserPref = getMovieRequestHandler().getPrefSortType();
         initSelected(lastUserPref);
-        MotionApplication.getInstance().getMovieRequestHandler().bind(this).load(lastUserPref, 1);
+        getMovieRequestHandler().bind(this).init();
     }
 
-    private void bindMovieRequestHandler() {
-        MotionApplication.getInstance().getMovieRequestHandler().bind(this);
+    private MovieRequestHandler getMovieRequestHandler() {
+        return MotionApplication.getInstance().getMovieRequestHandler();
     }
-
 
     public void retry(View view) {
         MotionApplication.getInstance().getMovieRequestHandler().retry(getSelectedMovieSort());

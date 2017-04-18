@@ -41,7 +41,7 @@ public class MotionApplication extends Application {
 
     private void initMovieData() {
         movieRequestHandler = new MovieRequestHandler(this);
-        movieRequestHandler.load();
+        movieRequestHandler.init();
     }
 
     public VolleyInit getVolley() {

@@ -128,8 +128,8 @@ public class MovieRequestHandler {
         load(movieSort, 1);
     }
 
-    public void load() {
-        if (popularMovieData.getPageCount() == 0)
+    public void init() {
+        if ((popularMovieData.getPageCount() == 0 && getPrefSortType() == MovieSort.POPULAR) || (topRatedMovieData.getPageCount() == 0 && getPrefSortType() == MovieSort.TOP_RATED))
             load(getPrefSortType(), 1);
         else
             dataReady();
