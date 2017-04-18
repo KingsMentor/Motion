@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 
 import xyz.belvi.motion.controllers.application.MotionApplication;
+import xyz.belvi.motion.controllers.cache.preferences.UIPreference;
 import xyz.belvi.motion.controllers.presenters.DataPresenter;
 import xyz.belvi.motion.controllers.volley.customVolley.MoviesRetrieval;
 import xyz.belvi.motion.models.enums.MovieSort;
@@ -28,18 +29,22 @@ public class MovieRequestHandler {
 
     private Context mContext;
     private MovieSort currentMovieSort = MovieSort.POPULAR;
-    private boolean isLoading = false;
+    private boolean isLoading;
     private MovieRequestData popularMovieData = new MovieRequestData();
     private MovieRequestData topRatedMovieData = new MovieRequestData();
     private MovieAdapter movieAdapter;
+    private UIPreference uiPreference;
 
     public MovieRequestHandler(Context context) {
         this.mContext = context;
+        this.uiPreference = new UIPreference(mContext);
     }
 
     public MovieRequestHandler bind(final DataPresenter dataPresenter) {
+        if (movieAdapter != null)
+            return this;
         this.dataPresenter = dataPresenter;
-        movieAdapter = new MovieAdapter(popularMovieData.getMovies()) {
+        movieAdapter = new MovieAdapter(getPrefSortType() == MovieSort.POPULAR ? popularMovieData.getMovies() : topRatedMovieData.getMovies()) {
             @Override
             protected void movieSelected(View view, Movie movie, int position) {
                 dataMovieSelected(view, movie, position);
@@ -116,6 +121,7 @@ public class MovieRequestHandler {
         } else {
             dataReady();
         }
+        saveSortType(currentMovieSort);
     }
 
     public void retry(MovieSort movieSort) {
@@ -124,7 +130,7 @@ public class MovieRequestHandler {
 
     public void load() {
         if (popularMovieData.getPageCount() == 0)
-            load(MovieSort.POPULAR, 1);
+            load(getPrefSortType(), 1);
         else
             dataReady();
     }
@@ -145,6 +151,14 @@ public class MovieRequestHandler {
             next();
             dataReady();
         }
+    }
+
+    public MovieSort getPrefSortType() {
+        return uiPreference.getSortType();
+    }
+
+    private void saveSortType(MovieSort movieSort) {
+        uiPreference.setSortType(movieSort);
     }
 
     private void dataReady() {

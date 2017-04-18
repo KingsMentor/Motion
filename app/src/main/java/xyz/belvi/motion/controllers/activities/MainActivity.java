@@ -40,21 +40,31 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
         setContentView(R.layout.activity_main);
         initRecyclerView();
         initToolbar();
-        MotionApplication.getInstance().getMovieRequestHandler().bind(this).load();
-        findViewById(R.id.retry).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MotionApplication.getInstance().getMovieRequestHandler().retry(getSelectedMovieSort());
-            }
-        });
+        bindMovieRequestHandler();
+        MovieSort lastUserPref = MotionApplication.getInstance().getMovieRequestHandler().getPrefSortType();
+        initSelected(lastUserPref);
+        MotionApplication.getInstance().getMovieRequestHandler().bind(this).load(lastUserPref, 1);
+    }
 
+    private void bindMovieRequestHandler() {
+        MotionApplication.getInstance().getMovieRequestHandler().bind(this);
+    }
+
+
+    public void retry(View view) {
+        MotionApplication.getInstance().getMovieRequestHandler().retry(getSelectedMovieSort());
     }
 
     private MovieSort getSelectedMovieSort() {
         return selectedMenu == R.id.action_filter_popular ? MovieSort.POPULAR : MovieSort.TOP_RATED;
     }
 
-    int selectedMenu = R.id.action_filter_popular;
+    private void initSelected(MovieSort movieSort) {
+        selectedMenu = movieSort == MovieSort.POPULAR ? R.id.action_filter_popular : R.id.action_filter_top_rated;
+        navigationView.getMenu().findItem(selectedMenu).setChecked(true);
+    }
+
+    int selectedMenu;
 
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
