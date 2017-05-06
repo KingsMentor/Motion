@@ -11,7 +11,7 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 
 import xyz.belvi.motion.controllers.application.MotionApplication;
-import xyz.belvi.motion.controllers.cache.preferences.UIPreference;
+import xyz.belvi.motion.models.preferences.UIPreference;
 import xyz.belvi.motion.controllers.presenters.DataPresenter;
 import xyz.belvi.motion.controllers.volley.customVolley.MoviesRetrieval;
 import xyz.belvi.motion.models.enums.MovieSort;

@@ -1,4 +1,4 @@
-package xyz.belvi.motion.controllers.activities;
+package xyz.belvi.motion.views.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;

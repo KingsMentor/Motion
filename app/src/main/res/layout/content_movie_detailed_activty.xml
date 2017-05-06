@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="xyz.belvi.motion.controllers.activities.MovieDetailedActivty"
+    tools:context=".views.activities.MovieDetailedActivty"
     tools:showIn="@layout/activity_movie_detailed_activty">
 
     <android.support.v7.widget.LinearLayoutCompat

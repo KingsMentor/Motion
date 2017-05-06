@@ -1,4 +1,4 @@
-package xyz.belvi.motion.controllers.activities;
+package xyz.belvi.motion.views.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +16,7 @@ import xyz.belvi.motion.models.pojos.Movie;
 
 public class MovieDetailedActivty extends AppCompatActivity {
 
-    public static final String MOVIE_KEY = "xyz.belvi.motion.controllers.activities.MovieDetailedActivty.MOVIE_KEY";
+    public static final String MOVIE_KEY = "xyz.belvi.motion.views.activities.MovieDetailedActivty.MOVIE_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

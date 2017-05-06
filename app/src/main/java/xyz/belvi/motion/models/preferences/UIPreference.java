@@ -1,4 +1,4 @@
-package xyz.belvi.motion.controllers.cache.preferences;
+package xyz.belvi.motion.models.preferences;
 
 import android.content.Context;
 
@@ -9,7 +9,7 @@ import xyz.belvi.motion.models.enums.MovieSort;
  */
 
 public class UIPreference {
-    private final String SORT_KEY = "xyz.belvi.motion.controllers.cache.preferences.UIPreference.SORT_KEY";
+    private final String SORT_KEY = "xyz.belvi.motion.models.preferences.UIPreference.SORT_KEY";
     private Context mContext;
 
     public UIPreference(Context context) {

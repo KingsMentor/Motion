@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#ff333333"
     android:fitsSystemWindows="true"
-    tools:context="xyz.belvi.motion.controllers.activities.MovieDetailedActivty">
+    tools:context=".views.activities.MovieDetailedActivty">
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
