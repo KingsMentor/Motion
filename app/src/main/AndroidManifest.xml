@@ -3,6 +3,12 @@
     package="xyz.belvi.motion">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="xyz.belvi.motion.permission.favorite" />
+
+    <permission
+        android:name="xyz.belvi.motion.permission.favorite"
+        android:description="@string/provider_permission"
+        android:protectionLevel="signature" />
 
     <application
         android:name=".controllers.application.MotionApplication"
@@ -29,7 +35,15 @@
             android:name=".views.activities.MovieDetailedActivty"
             android:label="@string/title_activity_movie_detailed_activty"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+
+        <provider
+            android:name=".controllers.dataController.FavoriteContentProvider"
+            android:authorities="xyz.belvi.motion.authority"
+            android:enabled="true"
+            android:exported="false"
+            android:readPermission="xyz.belvi.motion.permission.favorite"
+            android:writePermission="xyz.belvi.motion.permission.favorite" />
     </application>
 
 </manifest>

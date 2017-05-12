@@ -24,12 +24,12 @@ import xyz.belvi.motion.controllers.presenters.DataPresenter;
 import xyz.belvi.motion.models.enums.MovieSort;
 import xyz.belvi.motion.models.pojos.Movie;
 import xyz.belvi.motion.views.adapters.MovieAdapter;
-import xyz.belvi.motion.views.enchanceViews.EnhanceRecyclerView;
+import xyz.belvi.motion.views.enchanceViews.EnhanceGridRecyclerView;
 import xyz.belvi.motion.views.enchanceViews.GridSpacingItemDecoration;
 
-public class MainActivity extends AppCompatActivity implements DataPresenter, EnhanceRecyclerView.listenToScroll {
+public class MainActivity extends AppCompatActivity implements DataPresenter, EnhanceGridRecyclerView.listenToScroll {
 
-    private EnhanceRecyclerView moviesRecyclerView;
+    private EnhanceGridRecyclerView moviesRecyclerView;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
@@ -55,15 +55,16 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
     }
 
     private MovieSort getSelectedMovieSort() {
-        return selectedMenu == R.id.action_filter_popular ? MovieSort.POPULAR : MovieSort.TOP_RATED;
+        return selectedMenu == R.id.action_filter_popular ? MovieSort.POPULAR : selectedMenu == R.id.action_filter_top_rated ? MovieSort.TOP_RATED : MovieSort.FAVORITE;
     }
 
     private void initSelected(MovieSort movieSort) {
-        selectedMenu = movieSort == MovieSort.POPULAR ? R.id.action_filter_popular : R.id.action_filter_top_rated;
+        selectedMenu = movieSort == MovieSort.POPULAR ? R.id.action_filter_popular : movieSort == MovieSort.TOP_RATED ? R.id.action_filter_top_rated : R.id.action_filter_favorite;
         navigationView.getMenu().findItem(selectedMenu).setChecked(true);
     }
 
     int selectedMenu;
+    private boolean loadOnClose;
 
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -78,7 +79,10 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-
+                if (loadOnClose) {
+                    MotionApplication.getInstance().getMovieRequestHandler().fetchAdapter(getSelectedMovieSort());
+                    loadOnClose = false;
+                }
             }
 
             @Override
@@ -96,21 +100,18 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 item.setChecked(true);
                 if (selectedMenu != item.getItemId()) {
-                    if (item.getItemId() == R.id.action_filter_popular) {
-                        MotionApplication.getInstance().getMovieRequestHandler().fetchAdapter(MovieSort.POPULAR);
-                    } else {
-                        MotionApplication.getInstance().getMovieRequestHandler().fetchAdapter(MovieSort.TOP_RATED);
-                    }
+                    selectedMenu = item.getItemId();
+                    loadOnClose = true;
                 }
                 drawerLayout.closeDrawer(Gravity.RIGHT);
-                selectedMenu = item.getItemId();
+
                 return true;
             }
         });
     }
 
     private void initRecyclerView() {
-        moviesRecyclerView = (EnhanceRecyclerView) findViewById(R.id.movies);
+        moviesRecyclerView = (EnhanceGridRecyclerView) findViewById(R.id.movies);
         moviesRecyclerView.listen(this);
         moviesRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         moviesRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 0, false));

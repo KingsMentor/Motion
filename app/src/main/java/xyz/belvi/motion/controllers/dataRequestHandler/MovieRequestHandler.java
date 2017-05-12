@@ -1,6 +1,7 @@
 package xyz.belvi.motion.controllers.dataRequestHandler;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.View;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -11,13 +12,18 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 
 import xyz.belvi.motion.controllers.application.MotionApplication;
-import xyz.belvi.motion.models.preferences.UIPreference;
+import xyz.belvi.motion.controllers.dataController.FavouriteDao;
 import xyz.belvi.motion.controllers.presenters.DataPresenter;
 import xyz.belvi.motion.controllers.volley.customVolley.MoviesRetrieval;
 import xyz.belvi.motion.models.enums.MovieSort;
 import xyz.belvi.motion.models.pojos.Movie;
 import xyz.belvi.motion.models.pojos.MovieRequestData;
+import xyz.belvi.motion.models.preferences.UIPreference;
 import xyz.belvi.motion.views.adapters.MovieAdapter;
+
+import static xyz.belvi.motion.models.enums.MovieSort.FAVORITE;
+import static xyz.belvi.motion.models.enums.MovieSort.POPULAR;
+import static xyz.belvi.motion.models.enums.MovieSort.TOP_RATED;
 
 /**
  * Created by zone2 on 4/12/17.
@@ -28,10 +34,11 @@ public class MovieRequestHandler {
     private DataPresenter dataPresenter;
 
     private Context mContext;
-    private MovieSort currentMovieSort = MovieSort.POPULAR;
+    private MovieSort currentMovieSort = POPULAR;
     private boolean isLoading;
     private MovieRequestData popularMovieData = new MovieRequestData();
     private MovieRequestData topRatedMovieData = new MovieRequestData();
+    private ArrayList<Movie> favMovies = new ArrayList<>();
     private MovieAdapter movieAdapter;
     private UIPreference uiPreference;
 
@@ -43,8 +50,9 @@ public class MovieRequestHandler {
     public MovieRequestHandler bind(final DataPresenter dataPresenter) {
         if (movieAdapter != null)
             return this;
+        updateFavList();
         this.dataPresenter = dataPresenter;
-        movieAdapter = new MovieAdapter(getPrefSortType() == MovieSort.POPULAR ? popularMovieData.getMovies() : topRatedMovieData.getMovies()) {
+        movieAdapter = new MovieAdapter(getPrefSortType() == POPULAR ? popularMovieData.getMovies() : getPrefSortType() == TOP_RATED ? topRatedMovieData.getMovies() : favMovies) {
             @Override
             protected void movieSelected(View view, Movie movie, int position) {
                 dataMovieSelected(view, movie, position);
@@ -54,28 +62,32 @@ public class MovieRequestHandler {
     }
 
     private void handleDataSuccessUpdate(ArrayList<Movie> movies, MovieSort movieSort) {
-        if (movieSort == MovieSort.POPULAR)
+        if (movieSort == POPULAR)
             popularMovieData.getMovies().addAll(movies);
-        else
+        else if (movieSort == TOP_RATED)
             topRatedMovieData.getMovies().addAll(movies);
+        else {
+            favMovies.clear();
+            favMovies.addAll(movies);
+        }
         if (movieAdapter == null)//handler has not been binded
             return;
         if (currentMovieSort == movieSort) {
-            int initialSize = movieSort == MovieSort.POPULAR ? popularMovieData.getMovies().size() - movies.size() : topRatedMovieData.getMovies().size() - movies.size();
-            int currentSize = movieSort == MovieSort.POPULAR ? popularMovieData.getMovies().size() : topRatedMovieData.getMovies().size();
+            int initialSize = movieSort == POPULAR ? popularMovieData.getMovies().size() - movies.size() : topRatedMovieData.getMovies().size() - movies.size();
+            int currentSize = movieSort == POPULAR ? popularMovieData.getMovies().size() : topRatedMovieData.getMovies().size();
             movieAdapter.notifyItemRangeInserted(initialSize, currentSize);
 //            movieAdapter.update(movies, initialSize, currentSize);
             if (initialSize == 0) {
                 dataReady();
             }
         } else {
-            movieAdapter.resetItem(movieSort == MovieSort.POPULAR ? popularMovieData.getMovies() : topRatedMovieData.getMovies());
+            movieAdapter.resetItem(movieSort == POPULAR ? popularMovieData.getMovies() : movieSort == MovieSort.TOP_RATED ? topRatedMovieData.getMovies() : favMovies);
         }
         loadComplete();
     }
 
     private void handleDataFailureUpdate(MovieSort movieSort) {
-        if ((popularMovieData.getMovies().size() == 0 && movieSort == MovieSort.POPULAR) || (topRatedMovieData.getMovies().size() == 0 && movieSort == MovieSort.TOP_RATED)) {
+        if ((popularMovieData.getMovies().size() == 0 && movieSort == POPULAR) || (topRatedMovieData.getMovies().size() == 0 && movieSort == MovieSort.TOP_RATED)) {
             loadFailed();
         } else {
             loadComplete();
@@ -83,34 +95,54 @@ public class MovieRequestHandler {
 
     }
 
+    private void loadFavorite(final Context context) {
+        new AsyncTask<Void, Void, ArrayList<Movie>>() {
+            @Override
+            protected ArrayList<Movie> doInBackground(Void... voids) {
+                return new FavouriteDao(context).getFavorites();
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<Movie> movies) {
+                super.onPostExecute(movies);
+                handleDataSuccessUpdate(movies, MovieSort.FAVORITE);
+            }
+        }.execute();
+
+    }
+
     private void handleDataLoad(Context context, final MovieSort movieSort, final int page) {
-        Request<ArrayList<Movie>> request = new MoviesRetrieval(context, movieSort, page, new Response.Listener<ArrayList<Movie>>() {
-            @Override
-            public void onResponse(ArrayList<Movie> response) {
-                isLoading = false;
-                if (movieSort == MovieSort.POPULAR && page > popularMovieData.getPageCount()) {
-                    popularMovieData.setPageCount(page);
-                    handleDataSuccessUpdate(response, movieSort);
+        if (movieSort == FAVORITE) {
+            loadFavorite(context);
+        } else {
+            Request<ArrayList<Movie>> request = new MoviesRetrieval(context, movieSort, page, new Response.Listener<ArrayList<Movie>>() {
+                @Override
+                public void onResponse(ArrayList<Movie> response) {
+                    isLoading = false;
+                    if (movieSort == POPULAR && page > popularMovieData.getPageCount()) {
+                        popularMovieData.setPageCount(page);
+                        handleDataSuccessUpdate(response, movieSort);
 
-                } else if (page > topRatedMovieData.getPageCount() && movieSort == MovieSort.TOP_RATED) {
-                    topRatedMovieData.setPageCount(page);
-                    handleDataSuccessUpdate(response, movieSort);
-                } else {
-                    dataReady();
-                    loadComplete();
+                    } else if (page > topRatedMovieData.getPageCount() && movieSort == MovieSort.TOP_RATED) {
+                        topRatedMovieData.setPageCount(page);
+                        handleDataSuccessUpdate(response, movieSort);
+                    } else {
+                        dataReady();
+                        loadComplete();
+                    }
                 }
-            }
 
 
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                isLoading = false;
-                handleDataFailureUpdate(movieSort);
-            }
-        });
-        request.setRetryPolicy(new DefaultRetryPolicy(5000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        MotionApplication.getInstance().getVolley().addToRequestQueue(request, MovieRequestHandler.class.getSimpleName());
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    isLoading = false;
+                    handleDataFailureUpdate(movieSort);
+                }
+            });
+            request.setRetryPolicy(new DefaultRetryPolicy(5000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            MotionApplication.getInstance().getVolley().addToRequestQueue(request, MovieRequestHandler.class.getSimpleName());
+        }
     }
 
     public void load(MovieSort movieSort, int page) {
@@ -129,28 +161,49 @@ public class MovieRequestHandler {
     }
 
     public void init() {
-        if ((popularMovieData.getPageCount() == 0 && getPrefSortType() == MovieSort.POPULAR) || (topRatedMovieData.getPageCount() == 0 && getPrefSortType() == MovieSort.TOP_RATED))
+        if (getPrefSortType() == FAVORITE || (popularMovieData.getPageCount() == 0 && getPrefSortType() == POPULAR) || (topRatedMovieData.getPageCount() == 0 && getPrefSortType() == MovieSort.TOP_RATED))
             load(getPrefSortType(), 1);
         else
             dataReady();
     }
 
     public void next() {
-        if (currentMovieSort == MovieSort.POPULAR)
+        if (currentMovieSort == POPULAR)
             load(currentMovieSort, popularMovieData.getPageCount() + 1);
-        else
+        else if (currentMovieSort == TOP_RATED)
             load(currentMovieSort, topRatedMovieData.getPageCount() + 1);
+        else {
+            updateFavList();
+        }
     }
 
     public void fetchAdapter(MovieSort movieSort) {
         if (movieAdapter == null)
             return;
         if (movieSort != currentMovieSort) {
-            movieAdapter.resetItem(movieSort == MovieSort.POPULAR ? popularMovieData.getMovies() : topRatedMovieData.getMovies());
+            movieAdapter.resetItem(movieSort == POPULAR ? popularMovieData.getMovies() : movieSort == MovieSort.TOP_RATED ? topRatedMovieData.getMovies() : favMovies);
             currentMovieSort = movieSort;
             next();
             dataReady();
         }
+        saveSortType(currentMovieSort);
+    }
+
+    public void updateFavList() {
+        new AsyncTask<Void, Void, ArrayList<Movie>>() {
+            @Override
+            protected ArrayList<Movie> doInBackground(Void... voids) {
+                return new FavouriteDao(mContext).getFavorites();
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<Movie> movies) {
+                super.onPostExecute(movies);
+                favMovies = movies;
+                if (currentMovieSort == FAVORITE)
+                    movieAdapter.resetItem(movies);
+            }
+        }.execute();
     }
 
     public MovieSort getPrefSortType() {
@@ -169,7 +222,7 @@ public class MovieRequestHandler {
     private void loadStart() {
         isLoading = true;
         if (dataPresenter != null)
-            dataPresenter.onLoadStarted(currentMovieSort == MovieSort.POPULAR ? popularMovieData.getMovies().size() == 0 : topRatedMovieData.getMovies().size() == 0);
+            dataPresenter.onLoadStarted(currentMovieSort == POPULAR ? popularMovieData.getMovies().size() == 0 : topRatedMovieData.getMovies().size() == 0);
     }
 
     private void loadFailed() {

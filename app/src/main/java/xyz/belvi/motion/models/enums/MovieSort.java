@@ -15,7 +15,8 @@ import xyz.belvi.motion.R;
 
 public enum MovieSort {
     POPULAR("movie/popular", Request.Method.GET),
-    TOP_RATED("movie/top_rated", Request.Method.GET);
+    TOP_RATED("movie/top_rated", Request.Method.GET),
+    FAVORITE("", Request.Method.GET);
 
     private String path;
     private int method;

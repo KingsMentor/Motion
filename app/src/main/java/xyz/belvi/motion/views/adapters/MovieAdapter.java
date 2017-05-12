@@ -1,6 +1,5 @@
 package xyz.belvi.motion.views.adapters;
 
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import xyz.belvi.motion.R;
 import xyz.belvi.motion.models.enums.MoviePosterSize;
 import xyz.belvi.motion.models.pojos.Movie;
-import xyz.belvi.motion.viewmodels.DiffUtils.MotionDiffUtils;
 import xyz.belvi.motion.viewmodels.holders.MovieHolder;
 
 
@@ -23,7 +21,7 @@ import xyz.belvi.motion.viewmodels.holders.MovieHolder;
 
 public abstract class MovieAdapter extends RecyclerView.Adapter<MovieHolder> {
 
-    private ArrayList<Movie> movies;
+    private ArrayList<Movie> movies = new ArrayList<>();
 
     public MovieAdapter(ArrayList<Movie> movies) {
         this.movies = movies;
@@ -57,11 +55,8 @@ public abstract class MovieAdapter extends RecyclerView.Adapter<MovieHolder> {
 
 
     public void resetItem(ArrayList<Movie> movies) {
-        final MotionDiffUtils diffCallback = new MotionDiffUtils(this.movies, movies);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-        this.movies.clear();
-        this.movies.addAll(movies);
-        diffResult.dispatchUpdatesTo(this);
+        this.movies = movies;
+        notifyDataSetChanged();
     }
 
     protected abstract void movieSelected(View view, Movie movie, int position);

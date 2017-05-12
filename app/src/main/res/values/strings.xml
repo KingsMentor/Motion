@@ -4,6 +4,7 @@
     <string name="filter">Filter</string>
     <string name="filter_popular">Popular</string>
     <string name="filter_top_rated">Top Rated</string>
+    <string name="filter_fav">Favorite</string>
     <string name="loading">loading</string>
     <string name="title_activity_movie_detailed_activty"></string>
     <string name="large_text">
@@ -96,4 +97,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="action_fav">Favorite</string>
+    <string name="provider_permission">Provider Permission for Favorited Movies</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
 </resources>

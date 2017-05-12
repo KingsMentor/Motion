@@ -6,7 +6,7 @@
     <android.support.v7.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/movie_img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="280dp"
         android:adjustViewBounds="true"
         android:background="#ff333333"
         android:scaleType="fitXY" />
