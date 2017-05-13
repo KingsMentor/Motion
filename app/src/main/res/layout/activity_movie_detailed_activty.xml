@@ -62,11 +62,34 @@
                     android:id="@+id/contentItems"
                     layout="@layout/content_movie_detailed_activty" />
 
+
+                <LinearLayout
+                    android:paddingLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trailers"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_marginTop="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#eeeeee" />
+
+                </LinearLayout>
+
                 <FrameLayout
                     android:id="@+id/trailers_and_reviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp" />
+                    android:paddingBottom="8dp" />
 
 
             </android.support.v7.widget.LinearLayoutCompat>

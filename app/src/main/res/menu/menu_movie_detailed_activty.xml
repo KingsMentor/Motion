@@ -8,4 +8,10 @@
         android:orderInCategory="100"
         android:title="@string/action_fav"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_review"
+        android:icon="@drawable/ic_rate_review_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/action_review"
+        app:showAsAction="always" />
 </menu>

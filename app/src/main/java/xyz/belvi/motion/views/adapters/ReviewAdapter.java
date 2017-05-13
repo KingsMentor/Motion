@@ -43,4 +43,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewHolder> {
         mReviews = reviews;
         notifyDataSetChanged();
     }
+
+    public void updateItems(ArrayList<Review> reviews) {
+        int currentSize = mReviews.size();
+        mReviews.addAll(reviews);
+        int newSize = mReviews.size();
+        notifyItemRangeInserted(currentSize, newSize);
+    }
 }

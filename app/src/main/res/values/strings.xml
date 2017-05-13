@@ -98,6 +98,11 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="action_fav">Favorite</string>
+    <string name="action_review">View Review</string>
     <string name="provider_permission">Provider Permission for Favorited Movies</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="empty_review"><![CDATA[<p>There\'s no review for <strong>%s</strong> yet.</p>!
+ ]]></string>
+    <string name="fav_success">successfully added to Favorite</string>
+    <string name="fav_removed">successfully removed from favorite</string>
 </resources>

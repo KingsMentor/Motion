@@ -44,12 +44,14 @@ public class FavouriteDao {
     public ArrayList<Movie> getFavorites() {
         ArrayList<Movie> movies = new ArrayList<>();
         Cursor resultCursor = mContext.getContentResolver().query(FavoriteContract.FavoriteEntry.CONTENT_URI, null, null, null, null);
-        while (resultCursor.moveToNext()) {
-            String movieData = resultCursor.getString(resultCursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_DATA));
-            Movie movie = new Gson().fromJson(movieData, Movie.class);
-            movies.add(movie);
+        if (resultCursor != null) {
+            while (resultCursor.moveToNext()) {
+                String movieData = resultCursor.getString(resultCursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_DATA));
+                Movie movie = new Gson().fromJson(movieData, Movie.class);
+                movies.add(movie);
+            }
+            resultCursor.close();
         }
-        resultCursor.close();
         return movies;
     }
 }

@@ -18,26 +18,27 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import xyz.belvi.motion.models.pojos.Review;
+import xyz.belvi.motion.models.pojos.ReviewRequestData;
 import xyz.belvi.motion.models.utils.AppUtils;
 
 /**
  * Created by zone2 on 4/12/17.
  */
 
-public class ReviewRequest extends Request<ArrayList<Review>> {
+public class ReviewRequest extends Request<ReviewRequestData> {
 
     private final Gson gson = new Gson();
-    private final Response.Listener<ArrayList<Review>> listener;
+    private final Response.Listener<ReviewRequestData> listener;
 
 
-    public ReviewRequest(Context context, long movieId, int page, Response.Listener<ArrayList<Review>> listener, Response.ErrorListener errorListener) {
-        super(Method.GET, AppUtils.buildReviewUri(context, movieId), errorListener);
+    public ReviewRequest(Context context, long movieId, int page, Response.Listener<ReviewRequestData> listener, Response.ErrorListener errorListener) {
+        super(Method.GET, AppUtils.buildReviewUri(context, movieId, page), errorListener);
         this.listener = listener;
     }
 
 
     @Override
-    protected Response<ArrayList<Review>> parseNetworkResponse(NetworkResponse response) {
+    protected Response<ReviewRequestData> parseNetworkResponse(NetworkResponse response) {
         try {
 
             String json = new String(
@@ -45,12 +46,14 @@ public class ReviewRequest extends Request<ArrayList<Review>> {
                     HttpHeaderParser.parseCharset(response.headers));
             try {
                 JSONArray results = new JSONObject(json).optJSONArray("results");
+                int totalPages = new JSONObject(json).optInt("total_pages");
+                int page = new JSONObject(json).optInt("page");
                 ArrayList<Review> reviews = new ArrayList<>();
                 for (int responseIndex = 0; responseIndex < results.length(); responseIndex++) {
                     final Review movie = gson.fromJson(results.getString(responseIndex), Review.class);
                     reviews.add(movie);
                 }
-                return Response.success(reviews,
+                return Response.success(new ReviewRequestData(reviews, page, totalPages <= page),
                         HttpHeaderParser.parseCacheHeaders(response));
             } catch (JSONException e) {
                 return Response.error(new ParseError(e));
@@ -64,7 +67,7 @@ public class ReviewRequest extends Request<ArrayList<Review>> {
     }
 
     @Override
-    protected void deliverResponse(ArrayList<Review> response) {
+    protected void deliverResponse(ReviewRequestData response) {
         listener.onResponse(response);
     }
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <xyz.belvi.motion.views.enchanceViews.EnhanceRecyclerView
+        android:id="@+id/reviews"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white" />
+
+
+    <ProgressBar
+        android:id="@+id/pb_load_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/empty_review_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="hhdnvcn c"
+        android:textColor="#787878"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+</FrameLayout>

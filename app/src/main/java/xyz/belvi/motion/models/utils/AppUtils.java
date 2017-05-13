@@ -16,17 +16,21 @@ public class AppUtils {
 
 
     public static String buildTrailerUri(Context context, long motionId) {
-        return getUri(context, "videos", motionId);
+        return getUri(context, "videos", motionId, 0, true);
     }
 
-    public static String buildReviewUri(Context context, long motionId) {
-        return getUri(context, "reviews", motionId);
+    public static String buildReviewUri(Context context, long motionId, int page) {
+        return getUri(context, "reviews", motionId, page, false);
     }
 
-    private static String getUri(Context context, String path, long motionId) {
+    private static String getUri(Context context, String path, long motionId, int page, boolean trailer) {
         try {
             ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            String url = BASE_URL + motionId + "/" + path + "?api_key=" + ai.metaData.getString(context.getString(R.string.movie_db_api_key));
+            String url =
+                    trailer ?
+                            BASE_URL + motionId + "/" + path + "?api_key=" + ai.metaData.getString(context.getString(R.string.movie_db_api_key))
+                            :
+                            BASE_URL + motionId + "/" + path + "?page=" + page + "&api_key=" + ai.metaData.getString(context.getString(R.string.movie_db_api_key));
             return url;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
