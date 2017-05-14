@@ -41,7 +41,7 @@ public abstract class MovieAdapter extends RecyclerView.Adapter<MovieHolder> {
                 movieSelected(view, getMovie(position), position);
             }
         });
-//        holder.getMovieImage().setContentDescription(getMovie(position).getTitle());
+        holder.getMovieImage().setContentDescription(getMovie(position).getTitle());
     }
 
     private Movie getMovie(int position) {
