@@ -75,7 +75,6 @@ public class MovieRequestHandler {
             int initialSize = movieSort == POPULAR ? popularMovieData.getMovies().size() - movies.size() : movieSort == MovieSort.TOP_RATED ? topRatedMovieData.getMovies().size() - movies.size() : favMovies.size() - movies.size();
             int currentSize = movieSort == POPULAR ? popularMovieData.getMovies().size() : movieSort == MovieSort.TOP_RATED ? topRatedMovieData.getMovies().size() : favMovies.size();
             movieAdapter.notifyItemRangeInserted(initialSize, currentSize);
-//            movieAdapter.update(movies, initialSize, currentSize);
             if (initialSize == 0) {
                 dataReady();
             }

@@ -11,7 +11,7 @@
         tools:context=".views.activities.MovieDetailedActivty">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar"
+            android:id="@id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
             android:background="@color/colorPrimaryDark"
@@ -19,7 +19,7 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/toolbar_layout"
+                android:id="@id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
@@ -27,7 +27,7 @@
                 app:layout_scrollFlags="scroll|enterAlways">
 
                 <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/img_postal"
+                    android:id="@id/img_postal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
@@ -36,7 +36,7 @@
                     app:layout_collapseMode="parallax" />
 
                 <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
+                    android:id="@id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
@@ -55,14 +55,14 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v7.widget.LinearLayoutCompat
-                android:id="@+id/linearLayoutCompat"
+                android:id="@id/linearLayoutCompat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
 
                 <include
-                    android:id="@+id/contentItems"
+                    android:id="@id/contentItems"
                     layout="@layout/content_movie_detailed_activty" />
 
 
@@ -89,7 +89,7 @@
                 </LinearLayout>
 
                 <FrameLayout
-                    android:id="@+id/trailers_and_reviews"
+                    android:id="@id/trailers_and_reviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="8dp" />

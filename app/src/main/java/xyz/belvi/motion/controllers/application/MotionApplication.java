@@ -31,7 +31,7 @@ public class MotionApplication extends Application {
         motionApplication = this;
         initVolley();
         initMovieData();
-//        defineCalligraphy();
+        defineCalligraphy();
     }
 
     private void initVolley() {

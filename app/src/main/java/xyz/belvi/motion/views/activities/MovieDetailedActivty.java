@@ -1,5 +1,6 @@
 package xyz.belvi.motion.views.activities;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import xyz.belvi.motion.R;
 import xyz.belvi.motion.controllers.application.MotionApplication;
 import xyz.belvi.motion.controllers.dataController.FavouriteDao;
@@ -95,5 +97,10 @@ public class MovieDetailedActivty extends AppCompatActivity {
             }
             MotionApplication.getInstance().getMovieRequestHandler().updateFavList();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
@@ -10,7 +10,7 @@
     tools:context=".views.activities.MainActivity">
 
     <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+        android:id="@id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -32,7 +32,7 @@
                     android:orientation="vertical">
 
                     <xyz.belvi.motion.views.enchanceViews.EnhanceGridRecyclerView
-                        android:id="@+id/movies"
+                        android:id="@id/movies"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -46,13 +46,12 @@
                 </LinearLayout>
 
                 <include
-                    android:id="@+id/failed_view"
+                    android:id="@id/failed_view"
                     layout="@layout/failed_to_load"
                     android:visibility="gone" />
 
                 <ProgressBar
-
-                    android:id="@+id/loading_items"
+                    android:id="@id/loading_items"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center" />
@@ -62,7 +61,7 @@
         </LinearLayout>
 
         <android.support.design.widget.NavigationView
-            android:id="@+id/nav_view"
+            android:id="@id/nav_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="right"

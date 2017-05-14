@@ -11,26 +11,26 @@
         android:orientation="vertical">
 
         <xyz.belvi.motion.views.enchanceViews.EnhanceRecyclerView
-            android:id="@+id/reviews"
+            android:id="@id/reviews"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
         <include
-            android:id="@+id/item_loading_view"
+            android:id="@id/item_loading_view"
             layout="@layout/loading_trailer_view"
             android:visibility="gone" />
     </LinearLayout>
 
 
     <ProgressBar
-        android:id="@+id/pb_load_indicator"
+        android:id="@id/pb_load_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
     <TextView
-        android:id="@+id/empty_review_indicator"
+        android:id="@id/empty_review_indicator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -40,7 +40,7 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/retry_view"
+        android:id="@id/retry_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

@@ -14,9 +14,9 @@ public class Movie implements Parcelable {
 
     private String poster_path, overview, release_date, original_title, original_language, title, backdrop_path;
     private long[] genre_ids;
-    private long id, video_count,dbId;
+    private long id, video_count;
     private float popularity, vote_average;
-    private boolean adult,isFavorite;
+    private boolean adult;
     private final String IMG_PATH = "http://image.tmdb.org/t/p/w";
 
     protected Movie(Parcel in) {
@@ -30,11 +30,9 @@ public class Movie implements Parcelable {
         genre_ids = in.createLongArray();
         id = in.readLong();
         video_count = in.readLong();
-        dbId = in.readLong();
         popularity = in.readFloat();
         vote_average = in.readFloat();
         adult = in.readByte() != 0;
-        isFavorite = in.readByte() != 0;
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -102,14 +100,6 @@ public class Movie implements Parcelable {
         return this.genre_ids;
     }
 
-    public boolean isFavorite() {
-        return this.isFavorite;
-    }
-
-    public Movie setFavorite(boolean favorite) {
-        this.isFavorite = favorite;
-        return this;
-    }
 
     @Override
     public int describeContents() {
@@ -128,19 +118,9 @@ public class Movie implements Parcelable {
         parcel.writeLongArray(genre_ids);
         parcel.writeLong(id);
         parcel.writeLong(video_count);
-        parcel.writeLong(dbId);
         parcel.writeFloat(popularity);
         parcel.writeFloat(vote_average);
         parcel.writeByte((byte) (adult ? 1 : 0));
-        parcel.writeByte((byte) (isFavorite ? 1 : 0));
     }
 
-    public long getDbId() {
-        return this.dbId;
-    }
-
-    public Movie setDbId(long dbId) {
-        this.dbId = dbId;
-        return this;
-    }
 }

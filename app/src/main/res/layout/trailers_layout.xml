@@ -6,20 +6,20 @@
     android:layout_height="wrap_content">
 
     <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/trailers"
+        android:id="@id/trailers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:flexWrap="wrap" />
 
     <ProgressBar
-        android:id="@+id/trailer_loading_indicator"
+        android:id="@id/trailer_loading_indicator"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center" />
 
     <LinearLayout
-        android:id="@+id/retry_view"
+        android:id="@id/retry_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">

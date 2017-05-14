@@ -7,14 +7,14 @@
     android:padding="8dp">
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/author"
+        android:id="@id/author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/content"
+        android:id="@id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

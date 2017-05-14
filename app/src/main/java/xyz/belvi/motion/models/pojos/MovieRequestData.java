@@ -8,16 +8,11 @@ import java.util.ArrayList;
 
 public class MovieRequestData {
     private ArrayList<Movie> movies = new ArrayList<>();
-    int pageCount = 0;
+    int pageCount;
 
 
     public ArrayList<Movie> getMovies() {
         return this.movies;
-    }
-
-    public MovieRequestData setMovies(ArrayList<Movie> movies) {
-        this.movies = movies;
-        return this;
     }
 
     public int getPageCount() {

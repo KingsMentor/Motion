@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class ReviewRequestData {
     private ArrayList<Review> reviews = new ArrayList<>();
-    int pageCount = 0;
-    boolean reachedPageEnd = false;
+    int pageCount;
+    boolean reachedPageEnd;
 
 
     public ReviewRequestData(ArrayList<Review> reviews, int pageCount, boolean reachedPageEnd) {

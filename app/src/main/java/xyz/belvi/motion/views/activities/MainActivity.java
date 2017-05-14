@@ -1,5 +1,6 @@
 package xyz.belvi.motion.views.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import xyz.belvi.motion.R;
 import xyz.belvi.motion.controllers.application.MotionApplication;
 import xyz.belvi.motion.controllers.dataRequestHandler.MovieRequestHandler;
@@ -201,5 +203,10 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
             }, 1500);
         } else
             findViewById(R.id.loading_view_indicator).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
