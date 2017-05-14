@@ -11,7 +11,7 @@
         android:gravity="center"
         android:text="@string/reviews_load_failed"
         android:textColor="@color/review_failed"
-        android:textSize="18sp" />
+        android:textSize="@dimen/retry_details_txt_zise" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@id/retry"

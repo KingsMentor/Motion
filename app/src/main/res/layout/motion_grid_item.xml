@@ -5,15 +5,15 @@
 
     <ProgressBar
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="40dp"
-        android:layout_height="3dp"
+        android:layout_width="@dimen/motion_img_loading_pb_width"
+        android:layout_height="@dimen/motion_img_loading_pb_height"
         android:layout_gravity="center"
         android:indeterminate="true" />
 
     <android.support.v7.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@id/movie_img"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="@dimen/motion_img_height"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
         android:scaleType="fitXY"

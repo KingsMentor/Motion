@@ -34,9 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:padding="16dp"
+        android:padding="@dimen/empty_view_padding"
         android:textColor="@color/review_failed"
-        android:textSize="16sp"
+        android:textSize="@dimen/empty_text_size"
         android:visibility="gone" />
 
     <LinearLayout

@@ -14,8 +14,8 @@
 
     <ProgressBar
         android:id="@id/trailer_loading_indicator"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/trailer_pb_dimen"
+        android:layout_height="@dimen/trailer_pb_dimen"
         android:layout_gravity="center" />
 
     <LinearLayout
