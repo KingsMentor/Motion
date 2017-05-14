@@ -122,5 +122,6 @@
     <string name="trailer_header">Trailers</string>
     <string name="movie_description">Movie Description</string>
     <string name="trailer_content_description">Trailer from %s</string>
+    <string name="title_txt">Motion - %s</string>
 
 </resources>

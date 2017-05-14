@@ -38,4 +38,5 @@
     <item name="trailer_txt_view" type="id" />
     <item name="trailers" type="id" />
     <item name="trailer_loading_indicator" type="id" />
+    <item name="toolbar_title_view" type="id" />
 </resources>

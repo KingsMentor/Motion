@@ -14,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
+    private AppCompatTextView toolbarTitleView;
 
 
     @Override
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
         MovieSort lastUserPref = getMovieRequestHandler().getPrefSortType();
         initSelected(lastUserPref);
         getMovieRequestHandler().bind(this).init();
+        setTitle();
     }
 
     private MovieRequestHandler getMovieRequestHandler() {
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
 
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbarTitleView = (AppCompatTextView) toolbar.findViewById(R.id.toolbar_title_view);
         setSupportActionBar(toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 if (loadOnClose) {
+                    setTitle();
                     MotionApplication.getInstance().getMovieRequestHandler().fetchAdapter(getSelectedMovieSort());
                     loadOnClose = false;
                 }
@@ -208,5 +213,9 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    private void setTitle() {
+        toolbarTitleView.setText(String.format(getString(R.string.title_txt), getSelectedMovieSort().getSortType()));
     }
 }

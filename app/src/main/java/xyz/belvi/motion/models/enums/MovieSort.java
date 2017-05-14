@@ -14,17 +14,19 @@ import xyz.belvi.motion.R;
  */
 
 public enum MovieSort {
-    POPULAR("movie/popular", Request.Method.GET),
-    TOP_RATED("movie/top_rated", Request.Method.GET),
-    FAVORITE("", Request.Method.GET);
+    POPULAR("movie/popular", "Popular", Request.Method.GET),
+    TOP_RATED("movie/top_rated", "Top Rated", Request.Method.GET),
+    FAVORITE("", "Favorite", Request.Method.GET);
 
     private String path;
+    private String sortType;
     private int method;
     private String BASE_URL = "http://api.themoviedb.org/3/";
 
-    MovieSort(String path, int method) {
+    MovieSort(String path, String sortType, int method) {
         this.path = path;
         this.method = method;
+        this.sortType = sortType;
     }
 
     public String getPath() {
@@ -33,6 +35,11 @@ public enum MovieSort {
 
     public int getMethod() {
         return this.method;
+    }
+
+
+    public String getSortType() {
+        return this.sortType;
     }
 
     public String buildURl(Context context, int page) {
