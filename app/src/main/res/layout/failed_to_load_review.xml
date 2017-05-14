@@ -9,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/data_load_failed"
-        android:textColor="@color/white"
+        android:text="@string/reviews_load_failed"
+        android:textColor="@color/review_failed"
         android:textSize="18sp" />
 
     <android.support.v7.widget.AppCompatButton
@@ -18,7 +18,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorAccent"
-        android:onClick="retry"
         android:text="@string/retry"
         android:textColor="@color/white" />
 

@@ -2,10 +2,13 @@ package xyz.belvi.motion.views.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -152,8 +155,16 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
 
     @Override
     public void movieSelected(View view, Movie movie, int postion) {
-        startActivity(new Intent(this, MovieDetailedActivty.class)
-                .putExtra(MovieDetailedActivty.MOVIE_KEY, movie));
+        Pair<View, String> p1 = Pair.create(view, getString(R.string.postal_transition_name));
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            startActivity(new Intent(this, MovieDetailedActivty.class)
+                    .putExtra(MovieDetailedActivty.MOVIE_KEY, movie), optionsCompat.toBundle());
+        } else {
+            startActivity(new Intent(this, MovieDetailedActivty.class)
+                    .putExtra(MovieDetailedActivty.MOVIE_KEY, movie));
+        }
+
     }
 
     @Override
@@ -191,6 +202,4 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
         } else
             findViewById(R.id.loading_view_indicator).setVisibility(View.VISIBLE);
     }
-
-
 }

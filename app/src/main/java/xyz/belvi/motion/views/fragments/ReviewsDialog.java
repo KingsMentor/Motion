@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,7 +31,9 @@ public class ReviewsDialog extends DialogFragment implements ReviewPresenter, En
     private TRHandler trailerHandler = new TRHandler();
     private EnhanceRecyclerView reviewList;
     private ProgressBar loadIndicator;
+    private View itemLoadingView;
     private TextView emptyReviewIndicator;
+    private LinearLayout retryView;
 
 
     public static final String MOVIE_KEY = "xyz.belvi.motion.views.fragments.TrailerAndReviews.MOVIE_KEY";
@@ -69,13 +72,28 @@ public class ReviewsDialog extends DialogFragment implements ReviewPresenter, En
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.reviews_layout, null, true);
+        initViews(view);
+        trailerHandler.bind(getContext(), this);
+        trailerHandler.retrieveReviews(getMovie().getId());
+
+        view.findViewById(R.id.retry).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                retryView.setVisibility(View.GONE);
+                loadIndicator.setVisibility(View.VISIBLE);
+                trailerHandler.retrieveReviews(getMovie().getId());
+            }
+        });
+        return view;
+    }
+
+    private void initViews(View view) {
         reviewList = (EnhanceRecyclerView) view.findViewById(R.id.reviews);
         loadIndicator = (ProgressBar) view.findViewById(R.id.pb_load_indicator);
         emptyReviewIndicator = (TextView) view.findViewById(R.id.empty_review_indicator);
+        retryView = (LinearLayout) view.findViewById(R.id.retry_view);
+        itemLoadingView = view.findViewById(R.id.item_loading_view);
         initRecyclerView();
-        trailerHandler.bind(getContext(), this);
-        trailerHandler.retrieveReviews(getMovie().getId());
-        return view;
     }
 
     @Override
@@ -89,7 +107,6 @@ public class ReviewsDialog extends DialogFragment implements ReviewPresenter, En
         reviewList.listen(this);
         reviewList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         reviewList.setHasFixedSize(false);
-        reviewList.setNestedScrollingEnabled(false);
     }
 
     @Override
@@ -112,17 +129,18 @@ public class ReviewsDialog extends DialogFragment implements ReviewPresenter, En
 
     @Override
     public void loadStart() {
-
+        itemLoadingView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void loadComplete() {
-
+        itemLoadingView.setVisibility(View.GONE);
     }
 
     @Override
     public void onReviewRetrieveFailed() {
-
+        loadIndicator.setVisibility(View.GONE);
+        retryView.setVisibility(View.VISIBLE);
     }
 
     public void onActivityCreated(Bundle arg0) {
@@ -130,4 +148,6 @@ public class ReviewsDialog extends DialogFragment implements ReviewPresenter, En
         getDialog().getWindow()
                 .getAttributes().windowAnimations = R.style.DialogAnimation;
     }
+
+
 }

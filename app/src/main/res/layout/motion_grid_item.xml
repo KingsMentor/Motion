@@ -3,13 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ProgressBar
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="40dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:indeterminate="true" />
+
     <android.support.v7.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/movie_img"
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:adjustViewBounds="true"
-        android:background="#ff333333"
-        android:scaleType="fitXY" />
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:transitionName="@string/postal_transition_name" />
 
 
 </FrameLayout>

@@ -29,6 +29,7 @@ public class TRHandler {
     private Context mContext;
     private ReviewAdapter mReviewAdapter;
     private ReviewRequestData reviewRequestData;
+    private boolean isLoading;
 
 
     public void bind(Context context, TrailerPresenter trailerPresenter) {
@@ -63,45 +64,51 @@ public class TRHandler {
 
     }
 
-    public void nextReviewPage(long movieId){
+    public void nextReviewPage(long movieId) {
         retrieveReviews(movieId);
     }
 
     public void retrieveReviews(long movieId) {
-        if (reviewRequestData.isReachedPageEnd()) {
-            mReviewPresenter.loadComplete();
-            return;
-        }
-        mReviewPresenter.loadStart();
-        Request<ReviewRequestData> request = new ReviewRequest(mContext, movieId, reviewRequestData.getPageCount() + 1, new Response.Listener<ReviewRequestData>() {
-            @Override
-            public void onResponse(ReviewRequestData response) {
+        if (!isLoading) {
+            isLoading = true;
+            if (reviewRequestData.isReachedPageEnd()) {
                 mReviewPresenter.loadComplete();
-                reviewRequestData.setReachedPageEnd(response.isReachedPageEnd());
-                if (mReviewAdapter.getItemCount() == 0 && response.getReviews().size() == 0) {
-                    mReviewPresenter.emptyReview();
-                } else {
-                    reviewRequestData.nextPage();
-                    if (mReviewAdapter.getItemCount() == 0) {
-                        mReviewAdapter.setItems(response.getReviews());
-                        mReviewPresenter.onReviewRetrieved(mReviewAdapter);
+                return;
+            }
+            if (reviewRequestData.getPageCount() != 0)
+                mReviewPresenter.loadStart();
+            Request<ReviewRequestData> request = new ReviewRequest(mContext, movieId, reviewRequestData.getPageCount() + 1, new Response.Listener<ReviewRequestData>() {
+                @Override
+                public void onResponse(ReviewRequestData response) {
+                    mReviewPresenter.loadComplete();
+                    isLoading = false;
+                    reviewRequestData.setReachedPageEnd(response.isReachedPageEnd());
+                    if (mReviewAdapter.getItemCount() == 0 && response.getReviews().size() == 0) {
+                        mReviewPresenter.emptyReview();
                     } else {
-                        mReviewAdapter.updateItems(response.getReviews());
+                        reviewRequestData.nextPage();
+                        if (mReviewAdapter.getItemCount() == 0) {
+                            mReviewAdapter.setItems(response.getReviews());
+                            mReviewPresenter.onReviewRetrieved(mReviewAdapter);
+                        } else {
+                            mReviewAdapter.updateItems(response.getReviews());
+                        }
+
                     }
-
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mReviewPresenter.loadComplete();
-                if (mReviewAdapter.getItemCount() == 0)
-                    mReviewPresenter.onReviewRetrieveFailed();
-            }
-        });
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    mReviewPresenter.loadComplete();
+                    isLoading = false;
+                    if (mReviewAdapter.getItemCount() == 0)
+                        mReviewPresenter.onReviewRetrieveFailed();
+                }
+            });
 
-        request.setRetryPolicy(new DefaultRetryPolicy(5000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        MotionApplication.getInstance().getVolley().addToRequestQueue(request, TRHandler.class.getSimpleName());
+            request.setRetryPolicy(new DefaultRetryPolicy(5000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            MotionApplication.getInstance().getVolley().addToRequestQueue(request, TRHandler.class.getSimpleName());
 
+        }
     }
 }

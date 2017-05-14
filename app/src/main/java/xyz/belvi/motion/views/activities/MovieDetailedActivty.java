@@ -36,8 +36,8 @@ public class MovieDetailedActivty extends AppCompatActivity {
 
     private void populateItems(Movie movie) {
 
-        Glide.with(this).load(movie.getBackdropPath(MoviePosterSize.w500)).into(movieDetailedActivtyBinding.imgPostal);
-        Glide.with(this).load(movie.getPosterPath(MoviePosterSize.w185)).into(movieDetailedActivtyBinding.contentItems.thumbnail);
+        Glide.with(this).load(movie.getPosterPath(MoviePosterSize.w500)).into(movieDetailedActivtyBinding.imgPostal);
+        Glide.with(this).load(movie.getBackdropPath(MoviePosterSize.w342)).into(movieDetailedActivtyBinding.contentItems.thumbnail);
 
 //        movieDetailedActivtyBinding.contentItems.overView.setText(movie.getOverview());
         movieDetailedActivtyBinding.contentItems.releaseDate.setText(movie.getReleaseDate());

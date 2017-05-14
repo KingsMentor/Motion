@@ -35,7 +35,6 @@ public abstract class MovieAdapter extends RecyclerView.Adapter<MovieHolder> {
     @Override
     public void onBindViewHolder(MovieHolder holder, final int position) {
         Glide.with(holder.getContext()).load(getMovie(position).getPosterPath(MoviePosterSize.w342)).into(holder.getMovieImage());
-//        holder.getVoteAverage().setText(String.valueOf(getMovie(position).getVoteAverage()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

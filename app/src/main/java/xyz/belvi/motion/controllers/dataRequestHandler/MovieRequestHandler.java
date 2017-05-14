@@ -48,8 +48,6 @@ public class MovieRequestHandler {
     }
 
     public MovieRequestHandler bind(final DataPresenter dataPresenter) {
-        if (movieAdapter != null)
-            return this;
         updateFavList();
         this.dataPresenter = dataPresenter;
         movieAdapter = new MovieAdapter(getPrefSortType() == POPULAR ? popularMovieData.getMovies() : getPrefSortType() == TOP_RATED ? topRatedMovieData.getMovies() : favMovies) {
@@ -58,6 +56,7 @@ public class MovieRequestHandler {
                 dataMovieSelected(view, movie, position);
             }
         };
+        movieAdapter.notifyDataSetChanged();
         return this;
     }
 
@@ -73,8 +72,8 @@ public class MovieRequestHandler {
         if (movieAdapter == null)//handler has not been binded
             return;
         if (currentMovieSort == movieSort) {
-            int initialSize = movieSort == POPULAR ? popularMovieData.getMovies().size() - movies.size() : topRatedMovieData.getMovies().size() - movies.size();
-            int currentSize = movieSort == POPULAR ? popularMovieData.getMovies().size() : topRatedMovieData.getMovies().size();
+            int initialSize = movieSort == POPULAR ? popularMovieData.getMovies().size() - movies.size() : movieSort == MovieSort.TOP_RATED ? topRatedMovieData.getMovies().size() - movies.size() : favMovies.size() - movies.size();
+            int currentSize = movieSort == POPULAR ? popularMovieData.getMovies().size() : movieSort == MovieSort.TOP_RATED ? topRatedMovieData.getMovies().size() : favMovies.size();
             movieAdapter.notifyItemRangeInserted(initialSize, currentSize);
 //            movieAdapter.update(movies, initialSize, currentSize);
             if (initialSize == 0) {
@@ -215,8 +214,10 @@ public class MovieRequestHandler {
     }
 
     private void dataReady() {
-        if (dataPresenter != null)
+        if (dataPresenter != null) {
             dataPresenter.onDataReady(movieAdapter);
+            loadComplete();
+        }
     }
 
     private void loadStart() {

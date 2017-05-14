@@ -11,9 +11,6 @@ import android.util.AttributeSet;
  */
 
 public class EnhanceRecyclerView extends RecyclerView {
-
-    private static final int THRESHOLD = 1;
-
     public EnhanceRecyclerView(Context context) {
         super(context);
     }
@@ -27,16 +24,16 @@ public class EnhanceRecyclerView extends RecyclerView {
     }
 
     private LinearLayoutManager mLayoutManager;
-    private Adapter mAdapter;
+    private RecyclerView.Adapter mAdapter;
 
     @Override
-    public void setLayoutManager(LayoutManager layout) {
+    public void setLayoutManager(RecyclerView.LayoutManager layout) {
         super.setLayoutManager(layout);
         mLayoutManager = (LinearLayoutManager) layout;
     }
 
     @Override
-    public void setAdapter(Adapter adapter) {
+    public void setAdapter(RecyclerView.Adapter adapter) {
         super.setAdapter(adapter);
         mAdapter = adapter;
     }
@@ -44,22 +41,26 @@ public class EnhanceRecyclerView extends RecyclerView {
     @Override
     public void onScrolled(int dx, int dy) {
         super.onScrolled(dx, dy);
-        if (mAdapter != null)
-            if (mLayoutManager.findLastCompletelyVisibleItemPosition() == mAdapter.getItemCount() - THRESHOLD) {
+        if (mAdapter != null) {
+            int l = mLayoutManager.findLastVisibleItemPosition();
+            int c = mAdapter.getItemCount();
+            if (l == c - 1) {
                 if (scrollCallback != null)
                     scrollCallback.reachedEndOfList();
             }
+        }
     }
 
     private listenToScroll scrollCallback;
 
-    public void listen(listenToScroll sc) {
-        scrollCallback = sc;
+    public void listen(listenToScroll scrollCallback) {
+        this.scrollCallback = scrollCallback;
     }
 
     public interface listenToScroll {
         void reachedEndOfList();
     }
 }
+
 
 

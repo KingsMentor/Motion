@@ -101,8 +101,14 @@
     <string name="action_review">View Review</string>
     <string name="provider_permission">Provider Permission for Favorited Movies</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="empty_review"><![CDATA[<p>There\'s no review for <strong>%s</strong> yet.</p>!
- ]]></string>
+    <string name="empty_review"><![CDATA[<p>There\'s no review for <strong>%s</strong> yet.</p>]]></string>
     <string name="fav_success">successfully added to Favorite</string>
     <string name="fav_removed">successfully removed from favorite</string>
+    <string name="youtube_link">http://www.youtube.com/watch?v=</string>
+    <string name="postal_transition_name">postal_transition_name</string>
+    <string name="trailers">Trailers</string>
+    <string name="retry">Retry</string>
+    <string name="data_load_failed">failed to load data</string>
+    <string name="trailers_load_failed">failed to load trailers</string>
+    <string name="reviews_load_failed">failed to load review</string>
 </resources>
