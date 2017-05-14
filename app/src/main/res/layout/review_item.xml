@@ -8,16 +8,20 @@
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@id/author"
+        fontPath="fonts/source_bold.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/review_author"
         android:textSize="@dimen/author_txt_size"
         android:textStyle="bold" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@id/content"
+        fontPath="fonts/source_code_light.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/content_margin"
+        android:contentDescription="@string/review_content"
         android:paddingLeft="@dimen/content_padding"
         android:textSize="@dimen/content_txt_size" />
 

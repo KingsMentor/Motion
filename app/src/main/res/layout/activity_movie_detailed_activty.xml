@@ -72,9 +72,11 @@
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/trailers_header_left_margin">
 
-                    <TextView
+                    <android.support.v7.widget.AppCompatTextView
+                        fontPath="fonts/source_bold.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/trailer_header"
                         android:text="@string/trailers"
                         android:textColor="@color/white"
                         android:textSize="@dimen/trailers_txt_size"

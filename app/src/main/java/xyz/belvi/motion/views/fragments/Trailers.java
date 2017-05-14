@@ -50,6 +50,7 @@ public class Trailers extends Fragment implements TrailerPresenter {
         View view = LayoutInflater.from(MotionApplication.getInstance().getApplicationContext()).inflate(R.layout.trailer_item, null, true);
         AppCompatTextView trailerAppCompatTextView = (AppCompatTextView) view.findViewById(R.id.trailer_txt_view);
         trailerAppCompatTextView.setText(trailer.getName());
+        trailerAppCompatTextView.setContentDescription(String.format(getString(R.string.trailer_content_description), trailer.getName()));
         trailerAppCompatTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

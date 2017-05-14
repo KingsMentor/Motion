@@ -16,6 +16,7 @@
         android:layout_height="@dimen/motion_img_height"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/movie_items"
         android:scaleType="fitXY"
         android:transitionName="@string/postal_transition_name" />
 

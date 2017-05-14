@@ -36,7 +36,7 @@
     <dimen name="author_txt_size">18sp</dimen>
     <dimen name="empty_text_size">16sp</dimen>
     <dimen name="empty_view_padding">16dp</dimen>
-    <dimen name="trailer_txt_size">12sp</dimen>
+    <dimen name="trailer_item_txt_size">12sp</dimen>
     <dimen name="trailer_padding">8dp</dimen>
     <dimen name="trailer_pb_dimen">30dp</dimen>
     <dimen name="trailer_margin">16dp</dimen>

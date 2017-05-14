@@ -11,6 +11,7 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@id/title"
+            fontPath="fonts/source_bold.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -37,6 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/rating_txt_padding_right"
+                android:contentDescription="@string/ratings"
                 android:textColor="@color/white"
                 android:textSize="@dimen/rating_txt_size" />
 
@@ -46,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:contentDescription="@string/ratings"
                 android:numStars="@integer/star_number"
                 android:paddingBottom="@dimen/rating_bar_padding"
                 android:paddingTop="@dimen/rating_bar_padding"
@@ -59,7 +62,8 @@
             android:id="@id/ftv"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_horizontal_margin">
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:contentDescription="@string/movie_description">
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@id/thumbnail"
@@ -70,6 +74,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="@dimen/backdrop_img_right_margin"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/back_drp_img"
                 android:scaleType="fitXY" />
 
         </uk.co.deanwild.flowtextview.FlowTextView>
