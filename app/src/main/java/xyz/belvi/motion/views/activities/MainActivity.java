@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements DataPresenter, En
     private boolean loadOnClose;
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
